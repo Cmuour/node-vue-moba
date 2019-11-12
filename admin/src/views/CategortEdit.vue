@@ -59,7 +59,7 @@ export default {
          this.model = res.data;
       },
       async fetchParent() {
-         const res = await this.$http.get(`rest/categories?class=1`);
+         const res = await this.$http.get(`rest/categories?class=1&type=category`);
          this.parents = res.data;
       }
    },

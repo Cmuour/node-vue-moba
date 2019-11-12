@@ -36,7 +36,7 @@ module.exports = app => {
         items = await req.Model.find({ "class": req.query.class, "parent": "5db960e895174c0ba44b9a8c" }).setOptions(queryOptions).limit(20)
         break;
       default:
-        items = await req.Model.find().setOptions(queryOptions).limit(20)
+        items = await req.Model.find().setOptions(queryOptions).limit(200)
         break;
     }
 
@@ -55,6 +55,7 @@ module.exports = app => {
 
   const multer = require('multer')
   const upload = multer({ dest: __dirname + '/../../uploads' })
+  
   app.post('/admin/api/upload',authMiddleware(), upload.single('file'), async (req, res) => {
     const file = req.file
     file.url = `http://localhost:3000/uploads/${file.filename}`

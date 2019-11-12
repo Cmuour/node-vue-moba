@@ -16,9 +16,21 @@
                      :action="uploadUrl"
                      :headers="getAuthHeaders()"
                      :show-file-list="false"
-                     :on-success="afterUpload"
+                     :on-success="res=> $set(model,'avatar', res.url)"
                   >
                      <img v-if="model.avatar" :src="model.avatar" class="avatar" />
+                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+               </el-form-item>
+               <el-form-item label="背景图">
+                  <el-upload
+                     class="avatar-uploader"
+                     :action="uploadUrl"
+                     :headers="getAuthHeaders()"
+                     :show-file-list="false"
+                     :on-success="res=> $set(model,'banner', res.url)"
+                  >
+                     <img v-if="model.banner" :src="model.banner" class="avatar" />
                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
                </el-form-item>
@@ -120,11 +132,43 @@
                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                      </el-form-item>
+                     <el-form-item label="技能冷却值">
+                        <el-input v-model="item.cooling"></el-input>
+                     </el-form-item>
+                     <el-form-item label="技能消耗">
+                        <el-input v-model="item.consume"></el-input>
+                     </el-form-item>
                      <el-form-item label="技能描述">
                         <el-input type="textarea" v-model="item.description"></el-input>
                      </el-form-item>
                      <el-form-item label="小提示">
                         <el-input type="textarea" v-model="item.tips"></el-input>
+                     </el-form-item>
+                     <el-form-item>
+                        <el-button size="small" type="danger" @click="model.skills.splice(i,1)">删除</el-button>
+                     </el-form-item>
+                  </el-col>
+               </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="英雄关系">
+               <el-button @click="model.partners.push({})">
+                  <i class="el-icon-plus"></i> 添加英雄关系
+               </el-button>
+               <el-row type="flex" style="flex-wrap:wrap;">
+                  <el-col
+                     style="margin-top:1rem; "
+                     :md="12"
+                     v-for="(item, i) in model.partners"
+                     :key="i"
+                  >
+                     <el-form-item label="英雄">
+                        <el-select v-model="item.hero" filterable>
+                           <el-option v-for="hero in heroes" :key="hero._id" :value="hero._id" :label="hero.name"></el-option>
+                        </el-select>
+                     </el-form-item>   
+                     
+                     <el-form-item label="小提示">
+                        <el-input type="textarea" v-model="item.description"></el-input>
                      </el-form-item>
                      <el-form-item>
                         <el-button size="small" type="danger" @click="model.skills.splice(i,1)">删除</el-button>
@@ -152,16 +196,14 @@ export default {
             avatar: "",
             scores: {},
             skills: []
-         }
+         },
+         heroes:[]
       };
    },
    props: {
       id: {}
    },
    methods: {
-      afterUpload(res) {
-         this.model.avatar = res.url;
-      },
       async save() {
          if (this.id) {
             await this.$http.put(`rest/hero/${this.id}`, this.model);
@@ -179,8 +221,12 @@ export default {
          this.model = Object.assign({}, this.model, res.data);
       },
       async fetchCategories() {
-         const res = await this.$http.get(`rest/categories?class=2&type=hero`);
+         const res = await this.$http.get(`rest/categories?class=2`);
          this.categories = res.data;
+      },
+      async fetchHeroes() {
+         const res = await this.$http.get(`rest/heroes`);
+         this.heroes = res.data;
       },
       async fetchItems() {
          const res = await this.$http.get(`rest/items`);
@@ -195,6 +241,7 @@ export default {
       this.fetchItems();
       this.fetchItems2();
       this.fetchCategories();
+      this.fetchHeroes();
       this.id && this.fetch();
    }
 };

@@ -1,0 +1,211 @@
+@import './variables';
+// reset
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+html{
+  font-size: 13px;
+}
+
+body{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2rem;
+  background-color: #f1f1f1;
+  -webkit-font-smoothing: antialiased;
+}
+
+a{
+  color: #999;
+  text-decoration: none;
+}
+p{
+  line-height: 1.5em;
+}
+
+@each $colorkey,$color in $colors {
+  .text-#{$colorkey} {
+    color: $color;
+  }
+  .bg-#{$colorkey}{
+    background-color: $color;
+  }
+}
+
+.inline-block{
+  display: inline-block;
+}
+
+.block{
+  display: block;
+}
+
+
+// text
+@each $var in (left, center, right) {
+  .text-#{$var}{
+    text-align: $var !important;
+  }
+}
+
+@each $sizekey,$size in $font-sizes {
+  .fs-#{$sizekey}{
+    font-size: $size * $base-font-size;
+  }
+}
+
+
+
+.d-flex{
+  display: flex;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
+.flex-1{
+  flex: 1
+}
+.flex-grow-1{
+  flex-grow: 1;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+
+@each $key,$value in $flex-jc {
+  .jc-#{$key}{
+    justify-content: $value;
+  }
+}
+
+@each $key,$value in $flex-ai {
+  .ai-#{$key}{
+    align-items: $value;
+  }
+}
+
+@each $typeKey,$type in $spacing-types {
+  // m-0: 0rem, m-1: 0.25rem
+  @each $sizeKey,$size in $spacing-sizes {
+    .#{$typeKey}-#{$sizeKey}{
+      #{$type}: $size * $spacing-base-size;
+    }
+  }
+
+  // mx-1 表示左右, my-1 表示上下
+  @each $sizeKey,$size in $spacing-sizes {
+    .#{$typeKey}x-#{$sizeKey}{
+      #{$type}-left: $size * $spacing-base-size;
+      #{$type}-right: $size * $spacing-base-size;
+    }
+    .#{$typeKey}y-#{$sizeKey}{
+      #{$type}-top: $size * $spacing-base-size;
+      #{$type}-bottom: $size * $spacing-base-size;
+    }
+  }
+
+  // mt-0: 0rem, mt-1: 0.25rem
+  @each $directionKey,$direction in $spacing-direction {
+    @each $sizeKey,$size in $spacing-sizes {
+      .#{$typeKey}#{$directionKey}-#{$sizeKey}{
+        #{$type}-#{$direction}: $size * $spacing-base-size;
+      }
+    }
+  }
+}
+
+.btn{
+  border: 0;
+  border-radius: 2px;
+  font-size: map-get($font-sizes, 'sm' ) * $base-font-size;
+  padding: 0.3rem 0.6rem;
+  &.btn-lg{
+    background: map-get($colors, 'white-1');
+    border: 1px solid map-get($colors,'white-2');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.7rem 0;
+    i{
+      color: map-get($colors, 'primary');
+      font-weight: bold;
+      margin-right: 0.8rem;
+      font-size: 1.4rem;
+    }
+    span{
+      font-size: 1rem;
+    }
+  }
+}
+
+
+
+.nav{
+  display: flex;
+  .nav-item{
+    border-bottom: 3px solid transparent;
+    padding-bottom: 0.2rem;
+    &.active{
+      color: map-get($colors,'primary');
+      border-bottom-color: map-get($colors,'primary');
+    }
+  }
+  &.nav-inverse{
+    .nav-item{
+      color: map-get($colors,'white');
+      &.active{
+        border-bottom-color: map-get($colors,'white');
+      }
+    }
+  }
+}
+
+.w-100{
+  width: 100%;
+}
+
+.h-100{
+  height: 100%;
+}
+
+.sprite{
+  background: url(../index.png) no-repeat 0 0;
+  background-size: 28.8462rem;
+  display: inline-block;
+  &.sprite-news{
+    width: 1.7692rem;
+    height: 1.5385rem;
+    background-position: 63.546% 15.517%;
+  }
+  &.sprite-arrow{
+    width: 0.7692rem;
+    height: 0.7692rem;
+    background-position: 38.577% 52.076%;
+  }
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.text-wrap{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.box-sizing{
+  box-sizing: border-box;
+}
+
+
+/* 边宽设置 */
+@each $dir in (top,right,bottom,left){
+  .border-#{$dir}{
+    border-#{$dir}: 1px solid $border-color;
+  }
+}

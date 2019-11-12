@@ -1,0 +1,65 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "217302",
+      "name": "text",
+      "font_class": "text",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "4395678",
+      "name": "menu",
+      "font_class": "menu",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "6654507",
+      "name": "card-hero",
+      "font_class": "card-hero",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "8329823",
+      "name": "Menu",
+      "font_class": "Menu",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
+      "icon_id": "9205066",
+      "name": "Tag",
+      "font_class": "Tag",
+      "unicode": "e847",
+      "unicode_decimal": 59463
+    },
+    {
+      "icon_id": "9528372",
+      "name": "menu",
+      "font_class": "default",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "10337412",
+      "name": "video",
+      "font_class": "video",
+      "unicode": "e761",
+      "unicode_decimal": 59233
+    },
+    {
+      "icon_id": "10678401",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e6db",
+      "unicode_decimal": 59099
+    }
+  ]
+}
