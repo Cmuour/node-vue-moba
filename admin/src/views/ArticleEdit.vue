@@ -15,6 +15,21 @@
          <el-form-item label="名称">
             <el-input v-model="model.title"></el-input>
          </el-form-item>
+         <el-form-item label="介绍">
+            <el-input type="textarea" v-model="model.description"></el-input>
+         </el-form-item>
+         <el-form-item label="封面">
+            <el-upload
+               class="avatar-uploader"
+               :action="uploadUrl"
+               :headers="getAuthHeaders()"
+               :show-file-list="false"
+               :on-success="res=> $set(model,'bg_img', res.url)"
+            >
+               <img v-if="model.bg_img" :src="model.bg_img" class="avatar" />
+               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+         </el-form-item>
          <el-form-item label="内容">
             <vue-editor
                v-model="model.content"

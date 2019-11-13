@@ -7,15 +7,15 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'main',
     component: Main,
+    meta:{ keepAlive: true },
     children:[
-      {path: '/', component: ()=> import('@/views/Home.vue')},
-      {path: '/articles/:id', component: ()=> import('@/views/Articles.vue'), props: true},
+      {path: '/', component: ()=> import('@/views/Home.vue'), meta:{ keepAlive: true }},
+      {path: '/articles/:id', component: ()=> import('@/views/Articles.vue'), props: true,meta:{ keepAlive: false }},
     ]
   },
   {
-    path: '/heroes/:id', component: ()=> import('@/views/Hero.vue'), props: true
+    path: '/heroes/:id', component: ()=> import('@/views/Hero.vue'), props: true,meta:{ keepAlive: false }
   }
 ]
 

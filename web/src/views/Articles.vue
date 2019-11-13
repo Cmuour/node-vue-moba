@@ -1,7 +1,7 @@
 <template>
 	<div class="article-page" v-if="model">
 		<div class="arti-header d-flex py-3 px-2 border-bottom">
-			<i class="iconfont icon-back text-blue fs-xl"></i>
+			<i class="iconfont icon-back text-blue fs-xl" @click="$router.back()"></i>
 			<strong class="flex-grow-1 text-wrap pr-2 text-blue fs-lg">{{model.title}}</strong>
 			<span>{{new Date | date}}</span>
 		</div>
@@ -51,6 +51,9 @@ export default{
 	},
 	created(){
 		this.fetch()
+	},
+	activated(){
+		document.documentElement.scrollTop = 0
 	}
 }
 </script>

@@ -32,9 +32,6 @@ module.exports = app => {
       case "hero":
         items = await req.Model.find({ "class": req.query.class, "parent": "5dba9ab55920e50a608fa782" }).setOptions(queryOptions).limit(20)
         break;
-      case "article":
-        items = await req.Model.find({ "class": req.query.class, "parent": "5db960e895174c0ba44b9a8c" }).setOptions(queryOptions).limit(20)
-        break;
       default:
         items = await req.Model.find().setOptions(queryOptions).limit(200)
         break;

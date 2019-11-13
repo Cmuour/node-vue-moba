@@ -15,13 +15,13 @@
       <!-- end of swiper -->
 
       <div class="nav-icons bg-white mt-3 pt-3 text-center text-dark-1">
-         <div class="d-flex flex-wrap">
+         <div class="d-flex flex-wrap" :class="{ close: isOpen}">
             <div class="nav-item mb-3 p-2" v-for="n in 10" :key="n">
                <i class="sprite sprite-news"></i>
                <div class="mt-1">爆料站</div>
             </div>
          </div>
-         <div class="bg-light py-2 fs-sm d-flex ai-center jc-center">
+         <div class="bg-light py-2 fs-sm d-flex ai-center jc-center" @click="plier">
             <i class="sprite sprite-arrow mr-1 fs-md"></i>
             <span>收起</span>
          </div>
@@ -62,16 +62,21 @@
          </template>
       </m-card-list>
       
-      <p>153156</p>  
-         <p>153156</p>
-      <p>153156</p>
-      <p>153156</p>
-         <p>153156</p>
-      <p>153156</p>
-            <p>153156</p>
-      <p>153156</p>
-      <p>153156</p>
-      <p>153156</p>
+      <m-card-list icon="text" title="图文攻略" :categories="items" @getIndex="fetchArticle" returnIndex>
+         <template #items="{category}">
+            <router-link tag="div" class="d-flex flex-wrap" :to="`/articles/${item._id}`" v-for="item in category.articleList" :key="item._id">
+               <div class="bg-img">
+                  <img :src="item.bg_img" class="w-100">
+               </div>
+               <div class="flex-1 pl-2 overflow">
+                  <p class="m-0 text-wrap fs-lg">{{item.title}}</p>
+                  <p class="m-0 text-grey-1 text-wrap-s">{{item.description}}</p>
+                  <span class="mt-1 inline-block text-grey">11/4</span>
+               </div>
+            </router-link>
+         </template>
+      </m-card-list>
+      <p>到底是错在哪里  偶尔会报name of undefined</p>
    </div>
 </template>
 
@@ -98,10 +103,22 @@ export default {
          },
          categories: [],
          heroes:[],
-         curdate: new Date()
+         curdate: new Date(),
+         isOpen: false,
+         count: 5,
+         docToutHeight:0,  // document总高度
+         docHeight: 0,     // 可视高度
+         scrollTop: 0,
+         loadData: false,
+         items: [],
+         active: 0,
+         classify: []
       };
    },
    methods:{
+      plier(){
+         this.isOpen = !this.isOpen
+      },
       async fetch(){
          const res = await this.$http.get('/news/list')
          this.categories = res.data
@@ -109,19 +126,55 @@ export default {
       async fetchHeroList(){
          const res = await this.$http.get('/heroes/list')
          this.heroes = res.data
-
+      },
+      async fetchStrategy(){
+         const res = await this.$http.get('/article/strategy/all')
+         this.items = res.data.items
+         this.classify = res.data.classify
+      },
+      async handlerScroll(){
+         // 下拉加载更多
+         // 获取视窗高度
+         this.docHeight = document.documentElement.clientHeight
+         // 获取整个页面的高度
+         this.docToutHeight = document.documentElement.offsetHeight
+         this.scrollTop = document.documentElement.scrollTop
+         if(this.docToutHeight - this.scrollTop === this.docHeight && !this.loadData){
+            this.loadData = true
+            const res = await this.$http.get(`/article/strategy/${this.classify[this.active]["name"]}/${this.classify[this.active]["skipnum"]}`)
+            if(res.data.message){
+               this.loadData = false
+               return
+            }
+            this.items[this.active].articleList.push(res.data[0])
+            this.classify[this.active].skipnum += 1
+            setTimeout(()=>{
+               this.loadData = false
+            },3000)
+         }
+      },
+      fetchArticle(i){
+         this.active = i
       }
    },
    created(){
       this.fetchHeroList()
+      this.fetchStrategy()
       this.fetch()
+   },
+   activated(){
+
+      window.addEventListener('scroll',this.handlerScroll)
    }
 };
 </script>
 
 <style lang="scss">
 @import "../assets/scss/variables";
-
+.close{
+   overflow: hidden;
+   height: 4.6rem;
+}
 .pagination-home {
    .swiper-pagination-bullet {
       background: map-get($colors, "white");
@@ -152,5 +205,10 @@ export default {
       width: 20%;
    }
 }
-
+.bg-img{
+   width: 9.6rem;
+   img{
+      height: auto;
+   }
+}
 </style>

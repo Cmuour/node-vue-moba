@@ -37,7 +37,9 @@ p{
 .inline-block{
   display: inline-block;
 }
-
+.overflow{
+  overflow: hidden;
+}
 .block{
   display: block;
 }
@@ -197,6 +199,12 @@ p{
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.text-wrap-s{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
 
 .box-sizing{
   box-sizing: border-box;
@@ -208,4 +216,8 @@ p{
   .border-#{$dir}{
     border-#{$dir}: 1px solid $border-color;
   }
+};
+
+.transition{
+  transition: all .5s ease;
 }

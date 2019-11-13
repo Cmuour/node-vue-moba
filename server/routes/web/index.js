@@ -108,5 +108,44 @@ module.exports = app => {
     res.send(data)
   })
 
+  router.get('/article/strategy/all', async (req,res) => {
+    const data = await Category.findOne({"name": "图文攻略"})
+    const items = await Category.aggregate([
+      { $match: {parent: data._id} },
+      {
+        $lookup: {
+          from: 'articles',
+          localField: '_id',
+          foreignField: 'categories',
+          as: 'articleList'
+        }
+      },
+      {
+        $addFields: {
+          articleList: {$slice: ["$articleList", 1 ]}
+        }
+      }
+    ])
+    const classify = items.map(v=>{
+      return {
+        name: v.name,
+        skipnum: 1
+      }
+    })
+    res.send({items,classify})
+  })
+
+  router.get('/article/strategy/:name/:skipnum', async(req,res)=>{
+    const {name,skipnum} = req.params
+    const data = await Category.findOne({"name": name})
+    const article = await Article.find({"categories": data._id}).skip(1 * skipnum).limit(1)
+    if(!article.length){
+      res.send({
+        message: '没有文章给你获取了'
+      })
+    }
+    res.send(article)
+  })
+
   app.use('/web/api', router)
 }
